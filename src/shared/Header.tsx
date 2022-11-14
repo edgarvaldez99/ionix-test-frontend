@@ -1,8 +1,9 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
-import LinkButton from '../mui/LinkButton';
-import UserAvatar from './Avatar';
-import { MenuToggleProps } from './menu';
+import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import CenteredBox from "../mui/CenteredBox";
+import LinkButton from "../mui/LinkButton";
+import UserAvatar from "./Avatar";
+import { MenuToggleProps } from "./menu";
 
 export default function Header(props: MenuToggleProps) {
   return (
@@ -18,11 +19,13 @@ export default function Header(props: MenuToggleProps) {
         >
           <MenuIcon />
         </IconButton>
-        <LinkButton to="/" sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" color="white" >
-            IONIX
-          </Typography>
-        </LinkButton>
+        <CenteredBox sx={{ flexGrow: 1 }}>
+          <LinkButton to="/">
+            <Typography variant="h6" color="white">
+              IONIX
+            </Typography>
+          </LinkButton>
+        </CenteredBox>
         <UserAvatar />
       </Toolbar>
     </AppBar>

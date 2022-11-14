@@ -1,17 +1,30 @@
-import { Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import * as React from 'react';
-import { useAuth } from '../contexts/auth-context';
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import * as React from "react";
+import { useAuth } from "../contexts/auth-context";
 
 export default function UserAvatar() {
   const { logout } = useAuth();
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleLogoutMenu = () => {
     setAnchorElUser(null);
     logout();
   };
@@ -24,24 +37,24 @@ export default function UserAvatar() {
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: '45px' }}
+        sx={{ mt: "45px" }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         keepMounted
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-          <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">Logout</Typography>
-          </MenuItem>
+        <MenuItem onClick={handleLogoutMenu}>
+          <Typography textAlign="center">Logout</Typography>
+        </MenuItem>
       </Menu>
     </Box>
   );

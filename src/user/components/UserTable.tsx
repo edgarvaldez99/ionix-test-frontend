@@ -1,13 +1,25 @@
-import React from 'react';
-import { CircularProgress } from '@mui/material';
-import AlertError from '../../mui/AlertError';
-import Table from '../../mui/Table';
-import useUserListState from '../hooks/user-list';
-import TableContainer from '../../shared/TableContainer';
-import columns from './UserTable.headers';
+import React from "react";
+import { CircularProgress } from "@mui/material";
+import AlertError from "../../mui/AlertError";
+import Table from "../../mui/Table";
+import TableContainer from "../../shared/TableContainer";
+import createColumns from "./UserTable.columns";
+import { User } from "../interface/user";
 
-export default function UserTable() {
-  const { loading, data, error } = useUserListState();
+type UserTableProps = {
+  loading: boolean;
+  data: User[];
+  error: string;
+  refresh: () => void;
+};
+
+export default function UserTable({
+  loading,
+  data,
+  error,
+  refresh,
+}: UserTableProps) {
+  const columns = createColumns(refresh);
   return (
     <TableContainer>
       {loading && <CircularProgress />}

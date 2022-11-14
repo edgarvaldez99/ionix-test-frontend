@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';
-import { useRefreshContext } from '../../contexts/refresh-context';
-import { ApiResponse, getDataFromAPI } from '../../utils/api';
-import { User } from '../interface/user';
+import { useEffect, useState } from "react";
+import { ApiResponse, getDataFromAPI } from "../../utils/api";
+import { User } from "../interface/user";
 
-export default function useUserListState() {
-  const { updated } = useRefreshContext();
+export default function useUserList() {
   const [state, setState] = useState<ApiResponse<User[]>>({
     loading: true,
     data: [],
     error: undefined,
+    refresh: () => {
+      refreshState();
+    },
   });
-  // useEffect(() => {
-  //   setUpdated(false);
-  //   setOpenAlert(false);
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+
+  const refreshState = async () => {
+    try {
+      const data = await getDataFromAPI<User[]>("users");
+      setState({ ...state, loading: false, data, error: undefined });
+    } catch (error) {
+      setState({ ...state, loading: false, data: [], error });
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await getDataFromAPI<User[]>('users');
-        setState({ loading: false, data, error: undefined });
-      } catch (error) {
-        setState({ loading: false, data: [], error });
-        console.log('error: ', error);
-      }
-    })();
-  }, [updated]);
+    refreshState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return state;
 }

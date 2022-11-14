@@ -1,26 +1,28 @@
-import { API_BASE } from '../environments';
-import { TOKEN_KEY } from './constants';
+import { API_BASE } from "../environments";
+import { TOKEN_KEY } from "./constants";
 
 export interface ApiResponse<Data, Error = any> {
   loading: boolean;
   data: Data;
   error: Error;
+  refresh: () => void;
 }
-function getHeader(){
-  const token = JSON.parse(localStorage.getItem(TOKEN_KEY) ?? '');
+function getHeader() {
+  const token = JSON.parse(localStorage.getItem(TOKEN_KEY) ?? "");
   return {
-    Accept: 'application/json',
-    'Content-Type': 'application/json; charset=UTF-8',
+    Accept: "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
     Authorization: `Bearer ${token}`,
-}
+  };
 }
 export async function getDataFromAPI<Data>(endpoint: string): Promise<Data> {
   try {
     const response = await fetch(`${API_BASE}/${endpoint}`);
+    const result = await response.json();
     if (!response.ok) {
-      throw new Error(`Status code = ${response.status}`);
+      throw result;
     }
-    return response.json();
+    return result;
   } catch (error) {
     throw error;
   }
@@ -29,7 +31,7 @@ export async function getDataFromAPI<Data>(endpoint: string): Promise<Data> {
 export async function sendDataToAPI<Body, Data = Body>(
   endpoint: string,
   body: Body,
-  method: string = 'POST'
+  method: string = "POST"
 ): Promise<Data> {
   try {
     const response = await fetch(`${API_BASE}/${endpoint}`, {
@@ -48,7 +50,7 @@ export async function sendDataToAPI<Body, Data = Body>(
 }
 export async function removeDataFromAPI<Data>(
   endpoint: string,
-  method: string = 'DELETE'
+  method: string = "DELETE"
 ): Promise<Data> {
   try {
     const response = await fetch(`${API_BASE}/${endpoint}`, {
